@@ -16,9 +16,8 @@ This project is a full-stack web application designed for [describe project func
 4. [Installation](#installation)
 5. [Running the Project](#running-the-project)
 6. [Project Structure](#project-structure)
-7. [Testing](#testing)
-8. [Contributing](#contributing)
-9. [License](#license)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 ---
 
