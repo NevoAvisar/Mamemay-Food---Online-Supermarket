@@ -1,7 +1,3 @@
-Sure! Below is a professionally written README file for your project in English, including all the necessary conditions and requirements to run the project.
-
----
-
 # Project Name: Mamemay-Food---Online-Supermarket
 
 ## Overview
