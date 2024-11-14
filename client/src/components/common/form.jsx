@@ -24,7 +24,7 @@ function CommonForm({
   // Function to render form elements based on their type
   function renderInputsByComponentType(getControlItem) {
     let element = null;
-
+    console.log({ getControlItem, control });
     // Decide which component to render based on componentType
     switch (getControlItem.componentType) {
       case "input":

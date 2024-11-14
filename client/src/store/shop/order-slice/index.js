@@ -1,3 +1,4 @@
+import paths from "@/routes/paths";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -74,7 +75,7 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(createNewOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.approvalURL = action.payload.approvalURL;
+        state.approvalURL = paths.shop.paymentSuccess;
         state.orderId = action.payload.orderId;
         sessionStorage.setItem(
           "currentOrderId",

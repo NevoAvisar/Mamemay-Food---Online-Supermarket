@@ -42,6 +42,7 @@ const categoriesWithIcon = [
 
 function ShoppingHome() {
   const { productList } = useSelector((state) => state.shopProducts);
+  const { cartItems } = useSelector((state) => state.shopCart);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -66,6 +67,32 @@ function ShoppingHome() {
   }
 
   function handleAddToCart(getCurrentProductId) {
+    let getCartItems = cartItems.items || [];
+
+    if (getCartItems.length) {
+      const indexOfCurrentCartItem = getCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+
+      const getCurrentProductIndex = productList.findIndex(
+        (product) => product._id === getCurrentProductId
+      );
+      const getTotalStock = productList[getCurrentProductIndex]?.totalStock;
+
+      if (indexOfCurrentCartItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentCartItem].quantity;
+        if (getQuantity + 1 > getTotalStock) {
+          // אם הכמות המבוקשת גדולה מהסטוק הקיים, יש להציג הודעת שגיאה
+          toast({
+            title: t("Only state quantity can be added for this item", {
+              state: getQuantity,
+            }),
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+    }
     dispatch(
       addToCart({
         userId: user?.id,

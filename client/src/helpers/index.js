@@ -13,3 +13,17 @@ export const formatCurrency = (value) => {
   }
   return value;
 };
+
+export const debounce = (func, delay) => {
+  let inDebounce;
+  return function () {
+    const args = arguments;
+    clearTimeout(inDebounce);
+    inDebounce = setTimeout(() => func.apply(null, args), delay);
+  };
+};
+
+export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("he-IL");
+};

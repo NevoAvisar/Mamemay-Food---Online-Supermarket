@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { formatCurrency } from "@/helpers";
 
 // רכיב עוטף לסל הקניות של המשתמש
-function UserCartWrapper({ cartItems = [], setOpenCartSheet }) {
+function UserCartWrapper({ cartItems, setOpenCartSheet }) {
   const navigate = useNavigate();
 
   // חישוב סך הכל הקנייה (סה"כ מחיר לכל המוצרים בסל)

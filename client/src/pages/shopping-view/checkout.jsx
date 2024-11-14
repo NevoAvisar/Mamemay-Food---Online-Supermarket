@@ -32,7 +32,9 @@ function ShoppingCheckout() {
       : 0;
 
   function handleInitiatePaypalPayment() {
-    if (cartItems.length === 0) {
+    console.log({ cartItems });
+
+    if (cartItems.items.length === 0) {
       toast({
         title: "Your cart is empty. Please add items to proceed",
         variant: "destructive",
@@ -83,6 +85,9 @@ function ShoppingCheckout() {
     dispatch(createNewOrder(orderData)).then((data) => {
       if (data?.payload?.success) {
         setIsPaymentStart(true);
+        // debounce(() => {
+
+        // }, 2000);
       } else {
         setIsPaymentStart(false);
       }

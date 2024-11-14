@@ -106,12 +106,12 @@ function HeaderRightContent() {
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
             <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName[0].toUpperCase()}
+              {user?.userName[0]}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" className="w-56">
-          <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("Logged in as")} {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate("/shop/account")}>
             <UserCog className="mr-2 h-4 w-4" />
@@ -120,7 +120,7 @@ function HeaderRightContent() {
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
-            {t("AccouLogoutnt")}
+            {t("Account Logout")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

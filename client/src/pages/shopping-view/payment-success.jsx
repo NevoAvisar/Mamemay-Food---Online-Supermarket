@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 
 function PaymentSuccessPage() {
@@ -8,10 +9,10 @@ function PaymentSuccessPage() {
   return (
     <Card className="p-10">
       <CardHeader className="p-0">
-        <CardTitle className="text-4xl">Payment is successfull!</CardTitle>
+        <CardTitle className="text-4xl">{t("Payment is successful")}</CardTitle>
       </CardHeader>
       <Button className="mt-5" onClick={() => navigate("/shop/account")}>
-        View Orders
+        {t("View Orders")}
       </Button>
     </Card>
   );

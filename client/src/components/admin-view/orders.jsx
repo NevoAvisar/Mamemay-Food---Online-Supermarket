@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Dialog } from "../ui/dialog";
 import {
   Table,
   TableBody,
@@ -10,34 +8,19 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import AdminOrderDetailsView from "./order-details";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllOrdersForAdmin,
-  getOrderDetailsForAdmin,
-  resetOrderDetails,
-} from "@/store/admin/order-slice";
+import { getAllOrdersForAdmin } from "@/store/admin/order-slice";
 import { Badge } from "../ui/badge";
 import { t } from "i18next";
+import { formatCurrency, formatDate } from "@/helpers";
 
 function AdminOrdersView() {
-  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
+  const { orderList } = useSelector((state) => state.adminOrder);
   const dispatch = useDispatch();
-
-  function handleFetchOrderDetails(getId) {
-    dispatch(getOrderDetailsForAdmin(getId));
-  }
 
   useEffect(() => {
     dispatch(getAllOrdersForAdmin());
   }, [dispatch]);
-
-  console.log(orderDetails, "orderList");
-
-  useEffect(() => {
-    if (orderDetails !== null) setOpenDetailsDialog(true);
-  }, [orderDetails]);
 
   return (
     <Card>
@@ -45,7 +28,7 @@ function AdminOrdersView() {
         <CardTitle>{t("All Orders")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table dir="rtl">
           <TableHeader>
             <TableRow>
               <TableHead>{t("Order ID")}</TableHead>
@@ -58,46 +41,34 @@ function AdminOrdersView() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orderList?.length > 0
-              ? orderList.map((orderItem) => (
-                  <TableRow key={orderItem}>
-                    <TableCell>{orderItem?._id}</TableCell>
-                    <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
-                    <TableCell>
-                      <Badge
-                        className={`py-1 px-3 ${
-                          orderItem?.orderStatus === "confirmed"
-                            ? "bg-green-500"
-                            : orderItem?.orderStatus === "rejected"
-                            ? "bg-red-600"
-                            : "bg-black"
-                        }`}
-                      >
-                        {orderItem?.orderStatus}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
-                    <TableCell>
-                      <Dialog
-                        open={openDetailsDialog}
-                        onOpenChange={() => {
-                          setOpenDetailsDialog(false);
-                          dispatch(resetOrderDetails());
-                        }}
-                      >
-                        <Button
-                          onClick={() =>
-                            handleFetchOrderDetails(orderItem?._id)
-                          }
-                        >
-                          {t("View Details")}
-                        </Button>
-                        <AdminOrderDetailsView orderDetails={orderDetails} />
-                      </Dialog>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : null}
+            {orderList && orderList.length > 0 ? (
+              orderList.map((orderItem) => (
+                <TableRow key={orderItem?._id}>
+                  <TableCell>{orderItem?._id}</TableCell>
+                  <TableCell>{formatDate(orderItem?.orderDate)}</TableCell>
+                  <TableCell>
+                    <Badge
+                      className={`py-1 px-3 ${
+                        orderItem?.orderStatus === "confirmed"
+                          ? "bg-green-500"
+                          : orderItem?.orderStatus === "rejected"
+                          ? "bg-red-600"
+                          : "bg-black"
+                      }`}
+                    >
+                      {t(orderItem?.orderStatus)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(orderItem?.totalAmount)}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan="5">{t("No orders available.")}</TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>

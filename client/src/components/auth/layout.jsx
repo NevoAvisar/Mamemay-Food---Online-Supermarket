@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { Outlet } from "react-router-dom";
 
 function AuthLayout() {
@@ -6,7 +7,7 @@ function AuthLayout() {
       <div className="hidden lg:flex items-center justify-center bg-black w-1/2 px-12">
         <div className="max-w-md space-y-6 text-center text-primary-foreground">
           <h1 className="text-4xl font-extrabold tracking-tight">
-            Welcome to ECommerce Shopping
+            {t("Welcome to Mamemay-Food---Online-Supermarket")}
           </h1>
         </div>
       </div>

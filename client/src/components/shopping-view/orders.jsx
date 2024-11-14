@@ -18,6 +18,8 @@ import {
   resetOrderDetails,
 } from "@/store/shop/order-slice";
 import { Badge } from "../ui/badge";
+import { t } from "i18next";
+import { formatCurrency } from "@/helpers";
 
 function ShoppingOrders() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
@@ -31,7 +33,7 @@ function ShoppingOrders() {
 
   useEffect(() => {
     dispatch(getAllOrdersByUserId(user?.id));
-  }, [dispatch]);
+  }, [dispatch, user?.id]);
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
@@ -42,27 +44,31 @@ function ShoppingOrders() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Order History</CardTitle>
+        <CardTitle>{t("Order History")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Order Date</TableHead>
-              <TableHead>Order Status</TableHead>
-              <TableHead>Order Price</TableHead>
+              <TableHead>{t("Order ID")}</TableHead>
+              <TableHead>{t("Order Date")}</TableHead>
+              <TableHead>{t("Order Status")}</TableHead>
+              <TableHead>{t("Order Price")}</TableHead>
               <TableHead>
-                <span className="sr-only">Details</span>
+                <span className="sr-only">{t("Details")}</span>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orderList && orderList.length > 0
+            {orderList?.length > 0
               ? orderList.map((orderItem) => (
-                  <TableRow>
+                  <TableRow key={orderItem._id}>
                     <TableCell>{orderItem?._id}</TableCell>
-                    <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
+                    <TableCell>
+                      {new Date(orderItem?.orderDate).toLocaleDateString(
+                        "he-IL"
+                      )}
+                    </TableCell>
                     <TableCell>
                       <Badge
                         className={`py-1 px-3 ${
@@ -73,10 +79,12 @@ function ShoppingOrders() {
                             : "bg-black"
                         }`}
                       >
-                        {orderItem?.orderStatus}
+                        {t(orderItem?.orderStatus)}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
+                    <TableCell>
+                      {formatCurrency(orderItem?.totalAmount)}
+                    </TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}
@@ -90,7 +98,7 @@ function ShoppingOrders() {
                             handleFetchOrderDetails(orderItem?._id)
                           }
                         >
-                          View Details
+                          {t("View Details")}
                         </Button>
                         <ShoppingOrderDetailsView orderDetails={orderDetails} />
                       </Dialog>
